@@ -240,3 +240,7 @@ function grade($sub1, $sub2, $sub3, $sub4, $sub5, $sub6, $sub7, $sub8, $sub9)
     }
 }
 grade(90, 50, 90, 60, 80, 90, 59, 96, 46);
+
+
+echo $_SERVER['PHP_SELF'];
+echo $_SERVER['PHP_SELF'];
