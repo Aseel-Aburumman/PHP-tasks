@@ -274,3 +274,97 @@ echo '<h4>' . "-------------------------------------------------------" . '<h4>'
 // the enter button
 
 echo '<h4>' . ("16- ") . '<h4>';
+
+function customFloor($number, $precision, $separator = '.')
+{
+    $numberParts = explode($separator, $number);
+    // print_r($numberParts);
+    // echo "<br>";
+
+
+    $integerPart = $numberParts[0];
+    $decimalPart = substr($numberParts[1], 0, $precision);
+
+    $result = $integerPart . $separator . $decimalPart;
+
+    return $result;
+}
+
+echo customFloor(1.155, 2, ".") . "\n";
+echo "<br>";
+// Output: 1.15
+echo customFloor(100.25781, 4, ".") . "\n";
+echo "<br>";
+// Output: 100.2578
+echo customFloor(-2.9636, 3, ".") . "\n";
+echo "<br>";
+// Output: -2.963
+
+echo "<br>";
+
+
+// the enter button
+echo '<h4>' . "-------------------------------------------------------" . '<h4>';
+// the enter button
+
+echo '<h4>' . ("17- ") . '<h4>';
+function mergeUniqueLists($list1, $list2)
+{
+    $array1 = explode(", ", $list1);
+    $array2 = explode(", ", $list2);
+
+    $mergedArray = array_unique(array_merge($array1, $array2));
+
+    sort($mergedArray);
+
+    return implode(", ", $mergedArray);
+}
+
+$list1 = "4, 5, 6, 7";
+$list2 = "4, 5, 7, 8";
+
+echo "Sample output: " . mergeUniqueLists($list1, $list2);
+echo "<br>";
+
+
+// the enter button
+echo '<h4>' . "-------------------------------------------------------" . '<h4>';
+// the enter button
+
+echo '<h4>' . ("18- ") . '<h4>';
+
+function removeDuplicates($array)
+{
+    $uniqueArray = array_unique($array);
+
+
+    return $uniqueArray;
+}
+
+$array = array(4, 5, 6, 7, 4, 7, 8);
+
+$uniqueArray = removeDuplicates($array);
+
+echo "Sample Output: " . implode(", ", $uniqueArray);
+echo "<br>";
+
+
+// the enter button
+echo '<h4>' . "-------------------------------------------------------" . '<h4>';
+// the enter button
+
+echo '<h4>' . ("19- ") . '<h4>';
+
+function isSubset($array1, $array2)
+{
+    return empty(array_diff($array2, $array1));
+}
+
+$array1 = array('a', '1', '2', '3', '4');
+$array2 = array('a', '3');
+
+if (isSubset($array1, $array2)) {
+    echo "array2 is a subset array from array1";
+} else {
+    echo "array2 is not a subset array from array1";
+}
