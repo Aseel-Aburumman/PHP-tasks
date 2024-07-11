@@ -1,9 +1,9 @@
 <?php
 $cookie_name = "user";
-$cookie_value = "Alex Porter";
+$cookie_value = "aseel";
 setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
 
-setcookie("user", "", time() - 3600);
+// setcookie("user", "", time() - 3600);
 ?>
 <html>
 

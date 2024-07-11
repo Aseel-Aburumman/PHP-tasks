@@ -1,14 +1,9 @@
 <?php
-$counter_file = 'counter.txt';
+session_start();
 
-if (!file_exists($counter_file)) {
-    file_put_contents($counter_file, '0');
+if (!isset($_SESSION['counter'])) {
+    $_SESSION['counter'] = 0;
 }
+$_SESSION['counter']++;
 
-$current_count = file_get_contents($counter_file);
-
-$new_count = $current_count + 1;
-
-file_put_contents($counter_file, $new_count);
-
-echo "This page has been refreshed " . $new_count . " times.";
+echo "Page refresh count: " . $_SESSION['counter'];
