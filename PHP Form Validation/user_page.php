@@ -6,25 +6,31 @@ if (!isset($_SESSION['role_id'])) {
     echo "Who are you? Get out!";
     exit();
 } elseif ($_SESSION['role_id'] == 1) {
-    echo "hi   ", "<br />";
-    echo "User name:", $_SESSION['Full_name'], "<br />";
-    echo "User role:", $_SESSION['role_id'], "<br />";
+    // Fetch user information from the database
+    $stmt = $conn->prepare("SELECT Full_name, email, mobile, profile_picture FROM users WHERE email = ?");
+    $stmt->bind_param("s", $_SESSION['email']);  // Assuming email is stored in the session
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user) {
+        $fullName = htmlspecialchars($user['Full_name']);
+        $email = htmlspecialchars($user['email']);
+        $mobile = htmlspecialchars($user['mobile']);
+        $profilePicture = htmlspecialchars($user['profile_picture']);
+    } else {
+        echo "User not found.";
+        exit();
+    }
+
+    $stmt->close();
+    $conn->close();
 } elseif ($_SESSION['role_id'] == 2) {
     header("Location: admin_page.php");
     exit();
 }
-
-$user_id = $_SESSION['users_id'];
-
-$sql = "SELECT Full_name, email, mobile, profile_picture FROM users WHERE users_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->bind_result($Full_name, $email, $mobile, $profile_picture);
-$stmt->fetch();
-$stmt->close();
-$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,14 +43,12 @@ $conn->close();
 
 <body>
     <div class="container">
-        <h1>hi <?php echo htmlspecialchars($Full_name); ?></h1>
-        <?php if ($profile_picture) : ?>
-            <p>Profile Picture: <img class="userProfile" src="uploaded_pictures/ <?php echo htmlspecialchars($profile_picture); ?>" alt="Profile Picture"></p>
-        <?php else : ?>
-            <p>No profile picture available.</p>
-        <?php endif; ?>
-        <p>Email: <?php echo htmlspecialchars($email); ?></p>
-        <p>Mobile: <?php echo htmlspecialchars($mobile); ?></p>
+        <a href="logout.php" class="logout-btn">Logout</a>
+        <h1>hi <?php echo $fullName; ?></h1>
+        <p>Profile Picture:</p>
+        <img src="<?php echo $profilePicture; ?>" alt="Profile Picture" style="width:150px;height:150px;">
+        <p>Email: <?php echo $email; ?></p>
+        <p>Mobile: <?php echo $mobile; ?></p>
     </div>
 </body>
 

@@ -26,6 +26,14 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Read User</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,11 +43,8 @@ $conn->close();
         <p>Email: <?php echo htmlspecialchars($email); ?></p>
         <p>Mobile: <?php echo htmlspecialchars($mobile); ?></p>
         <p>Date Created: <?php echo htmlspecialchars($Date_created); ?></p>
-        <?php if ($profile_picture) : ?>
-            <p>Profile Picture: <img src="uploaded_pictures/<?php echo htmlspecialchars($profile_picture); ?>" alt="Profile Picture" width="100" height="100"></p>
-        <?php else : ?>
-            <p>No profile picture available.</p>
-        <?php endif; ?>
+        <p>Profile Picture:</p>
+        <img src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Profile Picture" class="profile-picture">
     </div>
 </body>
 

@@ -48,6 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $profile_picture_name = basename($profile_picture['name']);
             $uploadFile = $uploadDir . $profile_picture_name;
 
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
             if (move_uploaded_file($profile_picture['tmp_name'], $uploadFile)) {
                 // File successfully uploaded
             } else {
@@ -55,12 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } else {
             // If no new picture is uploaded, keep the current one
-            $profile_picture_name = $_POST['current_picture'];
+            $uploadFile = $_POST['current_picture'];
         }
 
         $sql = "UPDATE users SET Full_name = ?, email = ?, mobile = ?, profile_picture = ? WHERE users_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssii", $Full_name, $email, $mobile, $profile_picture_name, $user_id);
+        $stmt->bind_param("ssssi", $Full_name, $email, $mobile, $uploadFile, $user_id);
 
         if ($stmt->execute()) {
             echo "Update successful!";
@@ -108,6 +112,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="profile_picture">Profile Picture:</label>
             <input type="file" id="profile_picture" name="profile_picture"><br>
             <input type="hidden" name="current_picture" value="<?php echo htmlspecialchars($profile_picture); ?>"><br>
+            <?php if ($profile_picture) : ?>
+                <img src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Profile Picture" style="width:150px;height:150px;"><br>
+            <?php endif; ?>
             <input type="submit" value="Update">
         </form>
     </div>

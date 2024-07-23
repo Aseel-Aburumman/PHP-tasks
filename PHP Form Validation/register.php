@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mobile = trim($_POST["mobile"]);
     $password = trim($_POST["password"]);
     $confirm_password = trim($_POST["confirm_password"]);
+    $profile_picture = $_FILES['profile_picture'];
 
     $errors = [];
 
@@ -56,33 +57,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Passwords do not match.";
     }
 
-    // Validate profile picture
-    $profile_picture = $_FILES['profile_picture'];
-    if ($profile_picture['error'] == UPLOAD_ERR_NO_FILE) {
-        $errors[] = "Profile picture is required.";
+    // Validate and upload profile picture
+    if ($profile_picture['error'] !== UPLOAD_ERR_OK) {
+        $errors[] = "Error uploading profile picture.";
     } else {
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        if (!in_array($profile_picture['type'], $allowedTypes)) {
-            $errors[] = "Only JPG, PNG, and GIF files are allowed.";
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($profile_picture['type'], $allowed_types)) {
+            $errors[] = "Profile picture must be an image (jpeg, png, gif).";
+        } else {
+            $upload_dir = 'uploads/';
+            $profile_picture_path = $upload_dir . basename($profile_picture['name']);
+            if (!move_uploaded_file($profile_picture['tmp_name'], $profile_picture_path)) {
+                $errors[] = "Failed to save profile picture.";
+            }
         }
     }
 
     if (empty($errors)) {
-        // Move uploaded file
-        $uploadDir = 'uploaded_pictures/';
-        $uploadFile = $uploadDir . basename($profile_picture['name']);
-        if (move_uploaded_file($profile_picture['tmp_name'], $uploadFile)) {
-            // File successfully uploaded
-        } else {
-            $errors[] = "Failed to upload profile picture.";
-        }
-
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO users (Full_name, email, mobile, password, profile_picture, role_id) VALUES (?, ?, ?, ?, ?, 1)";
+        $sql = "INSERT INTO users (Full_name, email, mobile, password, role_id, profile_picture) VALUES (?, ?, ?, ?, 1, ?)";
         $stmt = $conn->prepare($sql);
 
-        $stmt->bind_param("sssss", $Full_name, $email, $mobile, $hashed_password, $uploadFile);
+        $stmt->bind_param("sssss", $Full_name, $email, $mobile, $hashed_password, $profile_picture_path);
 
         if ($stmt->execute()) {
             echo "Registration successful!";
@@ -127,8 +124,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="number" name="mobile" placeholder="mobile" id="mobile" required><br>
             <input type="password" name="password" placeholder="Password" required><br>
             <input type="password" name="confirm_password" placeholder="Confirm Password" required><br>
-            <label for="profile_picture">Profile Picture:</label>
-            <input type="file" id="profile_picture" name="profile_picture" required><br>
+            <input type="file" name="profile_picture" id="profile_picture" required><br>
+
             <input type="submit" value="Register">
         </form>
     </div>

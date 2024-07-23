@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $errors = [];
 
     // Validate email
-    if (empty($Full_name)) {
+    if (empty($email)) {
         $errors[] = "Email is required.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Invalid email format.";
@@ -55,6 +55,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $profile_picture_name = basename($profile_picture['name']);
             $uploadFile = $uploadDir . $profile_picture_name;
 
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
             if (move_uploaded_file($profile_picture['tmp_name'], $uploadFile)) {
                 // File successfully uploaded
             } else {
@@ -68,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $sql = "INSERT INTO users (Full_name, email, mobile, password, profile_picture, role_id) VALUES (?, ?, ?, ?, ?, 1)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssss", $Full_name, $email, $mobile, $hashed_password, $profile_picture_name);
+        $stmt->bind_param("sssss", $Full_name, $email, $mobile, $hashed_password, $uploadFile);
 
         if ($stmt->execute()) {
             echo "User created successfully!";
