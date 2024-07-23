@@ -8,7 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST["password"]);
     $confirm_password = trim($_POST["confirm_password"]);
 
-
     $errors = [];
 
     // Validate email
@@ -22,9 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($Full_name)) {
         $errors[] = "Full Name is required.";
     } else {
-        // only letters (both upper case and lower case) 
         $namePattern = '/^[a-zA-Z]+$/';
-        // splits the $full_name string into  (sections) based on 1+ whitespace
         $sections = preg_split('/\s+/', $Full_name);
         if (count($sections) !== 4) {
             $errors[] = "Full name must be in 4 sections: first name, middle name, last name, and family name.";
@@ -59,32 +56,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Passwords do not match.";
     }
 
-    // the pic :E
-    $profile_picture = null;
-    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-        $fileTmpPath = $_FILES['profile_picture']['tmp_name'];
-        $fileName = $_FILES['profile_picture']['name'];
-        $uploadFileDir = './uploaded_pictures/';
-        $dest_path = $uploadFileDir . $fileName;
-
-        if (move_uploaded_file($fileTmpPath, $dest_path)) {
-            $profile_picture = $fileName;
-        } else {
-            echo 'There was an error moving the uploaded file.';
-            exit;
-        }
+    // Validate profile picture
+    $profile_picture = $_FILES['profile_picture'];
+    if ($profile_picture['error'] == UPLOAD_ERR_NO_FILE) {
+        $errors[] = "Profile picture is required.";
     } else {
-        echo 'File upload error: ' . $_FILES['profile_picture']['error'];
-        exit;
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($profile_picture['type'], $allowedTypes)) {
+            $errors[] = "Only JPG, PNG, and GIF files are allowed.";
+        }
     }
 
     if (empty($errors)) {
+        // Move uploaded file
+        $uploadDir = 'uploaded_pictures/';
+        $uploadFile = $uploadDir . basename($profile_picture['name']);
+        if (move_uploaded_file($profile_picture['tmp_name'], $uploadFile)) {
+            // File successfully uploaded
+        } else {
+            $errors[] = "Failed to upload profile picture.";
+        }
+
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO users (Full_name , email, mobile, password,profile_picture ,role_id ) VALUES (? ,?, ?,?,?, 1)";
+        $sql = "INSERT INTO users (Full_name, email, mobile, password, profile_picture, role_id) VALUES (?, ?, ?, ?, ?, 1)";
         $stmt = $conn->prepare($sql);
 
-        $stmt->bind_param("sssss", $Full_name, $email, $mobile, $hashed_password, $profile_picture);
+        $stmt->bind_param("sssss", $Full_name, $email, $mobile, $hashed_password, $uploadFile);
 
         if ($stmt->execute()) {
             echo "Registration successful!";
@@ -100,7 +98,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -111,11 +108,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration page</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-
 </head>
 
 <body>
-
     <div class="container">
         <h2>Register</h2>
         <form method="post" action="register.php" id="myForm" enctype="multipart/form-data">
@@ -133,13 +128,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="password" name="password" placeholder="Password" required><br>
             <input type="password" name="confirm_password" placeholder="Confirm Password" required><br>
             <label for="profile_picture">Profile Picture:</label>
-            <input type="file" id="profile_picture" name="profile_picture"><br>
+            <input type="file" id="profile_picture" name="profile_picture" required><br>
             <input type="submit" value="Register">
         </form>
-    </div>.
-
+    </div>
     <script src="validation.js"></script>
-
 </body>
 
 </html>
