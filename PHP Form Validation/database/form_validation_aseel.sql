@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2024 at 02:06 PM
+-- Generation Time: Jul 25, 2024 at 05:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -67,7 +67,11 @@ INSERT INTO `users` (`users_id`, `Full_name`, `email`, `mobile`, `password`, `ro
 (8, 'lana ahmad ali moham', 'lana@gmail.com', 796615575, '$2y$10$cYyuI5toAs0Jv16ef1cjwu9YssSsh6gw.ky2.LcgooV5UBwSuvfVS', 1, '', '2024-07-23 10:23:03'),
 (12, 'Belal Khaled Khaer Naqawa', 'belal@gmail.com', 796615575, '$2y$10$o3G3sOlxMbDlMLq11lPrfeZgFLR2x1jzc1tNuMdRQ.k1MM5JQc8Xu', 1, 0x75706c6f616465645f70696374757265732f736164636174322e706e67, '2024-07-23 10:23:03'),
 (13, 'Amal Bashar Mohammad Alhamdan', 'amal@gmail.com', 796615575, '$2y$10$jUfWgWV395gVdmr3suybW.GtJvg4mXobKn9zPhgN3DkEIkY.c69DW', 1, 0x75706c6f616465645f70696374757265732f736164636174322e706e67, '2024-07-23 10:26:46'),
-(14, 'Osama Ahmad Mahmoud Alhyari', 'osama@gmail.com', 796615575, '$2y$10$yQsFBUnRz77tVXH9zT2pOeUnbOBg6DxK6.WH1mimuQn33ZZXEAXh.', 1, NULL, '2024-07-23 10:44:42');
+(14, 'Osama Ahmad Mahmoud Alhyari', 'osama@gmail.com', 796615575, '$2y$10$yQsFBUnRz77tVXH9zT2pOeUnbOBg6DxK6.WH1mimuQn33ZZXEAXh.', 1, NULL, '2024-07-23 10:44:42'),
+(16, 'Osama Mousa Hashem Alabsi', 'osama2@gmail.com', 796615575, '$2y$10$SxrTSveJLgTgEKm71gTXqepcEkPIJvCxDGFWntOYItfA6AQrbUQWu', 1, 0x75706c6f6164732f6d656d652e706e67, '2024-07-23 20:40:30'),
+(17, 'Tala Amjad Nouri Alsmady', 'tala@gmail.com', 796615575, '$2y$10$1BukUPe2a5rQLqgSx7QkG.NVZJAMq5ARaAC3c4tAB0YBMlEhcjSYO', 1, 0x75706c6f6164732f706570654f4b2e706e67, '2024-07-23 20:49:17'),
+(18, 'Rami Mahmoud Mohamed Alajo', 'rami@gmail.com', 796615575, '$2y$10$Ne9hvqBH6Gv6w0VszNLdW.T9CnwIe11SGPGjd0e1NpkqGG7YRRfUC', 1, 0x75706c6f6164732f7361646361742e706e67, '2024-07-23 20:53:56'),
+(19, 'Zain Khaled Bany Ali', 'zain@gmail.com', 796615575, '$2y$10$tMQpSFpCzDUcW3KBL/VoBekAzdGgOSX.NCF9d3sLSpdU9JhOeE3im', 1, 0x75706c6f616465645f70696374757265732f6875682e706e67, '2024-07-23 21:22:16');
 
 --
 -- Indexes for dumped tables
@@ -101,7 +105,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `users_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `users_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables
