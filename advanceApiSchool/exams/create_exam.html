@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create exam</title>
+    <style>
+      table {
+        width: 50%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Enter the data to create a exam</h2>
+    <form id="examForm">
+      <label for="date">Enter exam date :</label>
+      <input type="date" id="date" name="date" required /><br />
+      <label for="subject_id">Enter a subject_id of the exam:</label>
+      <input type="number" id="subject_id" name="subject_id" required /><br />
+      <label for="max_score">Enter the max_score for the exam:</label>
+      <input type="number" id="max_score" name="max_score" required /><br />
+
+      <button type="button" onclick="fetchexamData()">Add Subject</button>
+    </form>
+
+    <h2>Subject Details</h2>
+    <table id="examTable">
+      <thead>
+        <tr>
+          <th>exam_id</th>
+          <th>subject_id</th>
+          <th>date</th>
+          <th>max_score</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      function fetchexamData() {
+        const subject_id = document.getElementById("subject_id").value;
+        const date = document.getElementById("date").value;
+        const max_score = document.getElementById("max_score").value;
+
+        fetch("http://localhost/tasks/advanceApiSchool/exams/create_exam.php", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            subject_id: subject_id,
+            date: date,
+            max_score: max_score,
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data); // Log the data for debugging
+            if (data.subject_id) {
+              const tableBody = document.querySelector("#examTable tbody");
+              tableBody.innerHTML += `
+                        <tr>
+                          <td>${data.exam_id}</td>
+                          <td>${data.subject_id}</td>
+                          <td>${data.date}</td>
+                          <td>${data.max_score}</td>
+                        </tr>
+                    `;
+            } else {
+              alert("Failed to create exam");
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>

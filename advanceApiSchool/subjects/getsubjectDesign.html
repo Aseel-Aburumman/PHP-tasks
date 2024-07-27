@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get subject by ID</title>
+    <style>
+      table {
+        width: 50%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Get subject by ID</h2>
+    <label for="subjectId">Enter subject ID:</label>
+    <input type="number" id="subjectId" name="subjectId" />
+    <button onclick="fetchsubjectById()">Get the subject</button>
+
+    <h2>subject Details</h2>
+    <table id="subjectTable">
+      <thead>
+        <tr>
+          <th>subject_id</th>
+          <th>Name</th>
+          <th>description</th>
+          <th>teacherId INT</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      function fetchsubjectById() {
+        const subjectId = document.getElementById("subjectId").value;
+
+        fetch(
+          `http://localhost/tasks/advanceApischool/subjects/get_subject.php?id=${subjectId}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            if (data) {
+              const subject = data;
+              const tableBody = document.querySelector("#subjectTable tbody");
+              tableBody.innerHTML = `
+                <tr>
+                  <td>${subject.subject_id}</td>
+                  <td>${subject.name}</td>
+                  <td>${subject.description}</td>
+                  <td>${subject.teacherId}</td>
+                </tr>
+              `;
+            } else {
+              alert("subject not found or an error occurred.");
+            }
+          })
+
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>

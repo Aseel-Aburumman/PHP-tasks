@@ -1,0 +1,96 @@
+PASSWORD: Aseel123$
+------------------------------------------------------
+database :advance_api_school_aseel
+-------------------------------------------------------
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    date_of_birth date ,
+    address VARCHAR(100) ,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone INT(20),
+    password VARCHAR(255) NOT NULL
+);
+
+--------------------------------------------------------
+
+{
+    "name": "postman first add",
+    "date_of_birth": "1999-6-5",
+    "address": "zarqa",
+    "email": "postmanFirst@example.com",
+    "phone": "0796615575",
+    "password": "Aseel123$"
+}
+
+-----------------------------------------------------
+ALTER TABLE students
+ADD COLUMN subject1 VARCHAR(100),
+ADD COLUMN subject2 VARCHAR(100),
+ADD COLUMN subject3 VARCHAR(100);
+
+CREATE TABLE teachers (
+    teacherId INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    subject VARCHAR(100) NOT NULL,
+    email VARCHAR(100)
+);
+
+CREATE TABLE subjects (
+    subject_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    teacherId INT,
+    FOREIGN KEY (teacherId) REFERENCES teachers(teacherId)
+);
+
+CREATE TABLE exams (
+    exam_id INT AUTO_INCREMENT PRIMARY KEY,
+    subject_id INT NOT NULL,
+    date DATE,
+    max_score INT,
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+);
+
+--------------------------------------------------------------------
+INSERT INTO teachers (name, subject, email) VALUES
+('Mr. Smith', 'Math', 'mrsmith@example.com'),
+('Mr. Josh', 'Science', 'mrJosh@example.com'),
+('Mr. Waleed', 'History', 'mrWaleed@example.com'),
+('Ms. Lana', 'Art', 'msLana@example.com'),
+('Mr. Ali', 'Arabic', 'mrAli@example.com'),
+('Mrs. Johnson', 'English', 'mrsjohnson@example.com');
+--------------------------------------------------------------------
+INSERT INTO subjects (name, description,teacherId ) VALUES
+('Math', 'Mathematics description','1'),
+('Science', 'Science description','2'),
+('History', 'History description','3'),
+('English', 'English description','6'),
+('Arabic', 'Arabiv description','5'),
+('Art', 'Art description','4');
+
+--------------------------------------------------------------------
+
+INSERT INTO exams (subject_id, date, max_score) VALUES
+(1, '2023-05-15', 30),
+(1, '2023-06-15', 30),
+(1, '2023-07-15', 40),
+(2, '2023-05-16', 30),
+(2, '2023-06-17', 30),
+(2, '2023-07-18', 40),
+(3, '2023-05-16', 30),
+(3, '2023-06-17', 30),
+(3, '2023-07-19', 40),
+(4, '2023-05-12', 30),
+(4, '2023-06-13', 30),
+(4, '2023-07-15', 40),
+(5, '2023-05-17', 30),
+(5, '2023-06-18', 30),
+(5, '2023-07-22', 40),
+(6, '2023-05-12', 30),
+(6, '2023-06-15', 30),
+(6, '2023-07-17', 40);
+
+--------------------------------------------------------------------
+
+http://127.0.0.1:5500/tasks/advanceApiSchool/subjects/create_subject.php

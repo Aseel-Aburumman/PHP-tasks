@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update User</title>
+    <style>
+      #editField {
+        display: none;
+      }
+
+      #announcement {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Update a student data</h1>
+      <form onsubmit="takeTheId(); return false;">
+        <input
+          id="studentId"
+          type="number"
+          name="id"
+          placeholder="id"
+          value=""
+          required
+        /><br />
+        <button id="searchbtn" type="submit">Search</button>
+      </form>
+
+      <div id="editField">
+        <form id="updateForm" onsubmit="sendTheEdits(); return false;">
+          <input
+            id="name"
+            type="text"
+            name="name"
+            placeholder="name"
+            value=""
+            required
+          /><br />
+          <input
+            id="date_of_birth"
+            type="date"
+            name="date_of_birth"
+            placeholder="date_of_birth"
+            value=""
+            required
+          /><br />
+          <input
+            id="address"
+            type="text"
+            name="address"
+            placeholder="address"
+            value=""
+            required
+          /><br />
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="email"
+            value=""
+            required
+          /><br />
+          <input
+            id="phone"
+            type="number"
+            name="phone"
+            placeholder="phone"
+            value=""
+            required
+          /><br />
+          <input
+            id="password"
+            type="text"
+            name="password"
+            placeholder="password"
+            value=""
+            required
+          /><br />
+
+          <input type="submit" value="Update" />
+        </form>
+      </div>
+
+      <h3 id="announcement">The updated data was sent</h3>
+    </div>
+
+    <script>
+      function takeTheId() {
+        const studentId = document.getElementById("studentId").value;
+        const name = document.getElementById("name");
+        const date_of_birth = document.getElementById("date_of_birth");
+        const address = document.getElementById("address");
+        const email = document.getElementById("email");
+        const phone = document.getElementById("phone");
+        const password = document.getElementById("password");
+
+        fetch(
+          `http://localhost/tasks/advanceApischool/students/get_student.php?id=${studentId}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            if (data) {
+              const editField = document.getElementById("editField");
+              editField.style.display = "block";
+              const student = data;
+              name.value = student.name;
+              date_of_birth.value = student.date_of_birth;
+              address.value = student.address;
+              email.value = student.email;
+              phone.value = student.phone;
+              password.value = student.password;
+            } else {
+              alert("Student not found or an error occurred.");
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function sendTheEdits() {
+        const studentId = document.getElementById("studentId").value;
+        const name = document.getElementById("name").value;
+        const date_of_birth = document.getElementById("date_of_birth").value;
+        const address = document.getElementById("address").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const password = document.getElementById("password").value;
+
+        fetch(
+          "http://localhost/tasks/advanceApiSchool/students/update_student.php",
+          {
+            method: "PUT",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: studentId,
+              name: name,
+              date_of_birth: date_of_birth,
+              address: address,
+              email: email,
+              phone: phone,
+              password: password,
+            }),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === 200) {
+              const editField = document.getElementById("editField");
+              const announcement = document.getElementById("announcement");
+              editField.style.display = "none";
+              announcement.style.display = "block";
+            } else {
+              alert(data.message);
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display teachers</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>teachers List</h2>
+    <table id="teachersTable">
+      <thead>
+        <tr>
+          <th>teacherID</th>
+          <th>Name</th>
+          <th>Subject</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      // Fetch the data from read.php
+      fetch("http://localhost/tasks/advanceApiSchool/teachers/read.php")
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === 200) {
+            const tableBody = document.querySelector("#teachersTable tbody");
+            data.data.forEach((teacher) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                  <td>${teacher.teacherId}</td>
+                  <td>${teacher.name}</td>
+                  <td>${teacher.subject}</td>
+                  <td>${teacher.email}</td>
+                        `;
+              tableBody.appendChild(row);
+            });
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    </script>
+  </body>
+</html>

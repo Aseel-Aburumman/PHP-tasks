@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get exam by ID</title>
+    <style>
+      table {
+        width: 50%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Get exam by ID</h2>
+    <label for="examId">Enter exam ID:</label>
+    <input type="number" id="examId" name="examId" />
+    <button onclick="fetchexamById()">Get the exam</button>
+
+    <h2>exam Details</h2>
+    <table id="examTable">
+      <thead>
+        <tr>
+          <th>exam_id</th>
+          <th>subject_id</th>
+          <th>date</th>
+          <th>max_score</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      function fetchexamById() {
+        const examId = document.getElementById("examId").value;
+
+        fetch(
+          `http://localhost/tasks/advanceApischool/exams/get_exam.php?id=${examId}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            if (data) {
+              const exam = data;
+              const tableBody = document.querySelector("#examTable tbody");
+              tableBody.innerHTML = `
+                <tr>
+                  <td>${exam.exam_id}</td>
+                  <td>${exam.subject_id}</td>
+                  <td>${exam.date}</td>
+                  <td>${exam.max_score}</td>
+                </tr>
+              `;
+            } else {
+              alert("exam not found or an error occurred.");
+            }
+          })
+
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>

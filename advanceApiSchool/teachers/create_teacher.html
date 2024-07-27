@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Teacher</title>
+    <style>
+      table {
+        width: 50%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Enter the data to create a teacher</h2>
+    <form id="teacherForm">
+      <label for="name">Enter teacher Name:</label>
+      <input type="text" id="name" name="name" required /><br />
+      <label for="subject">Enter name of the subject:</label>
+      <input type="text" id="subject" name="subject" required /><br />
+      <label for="email">Enter teacher email:</label>
+      <input type="email" id="email" name="email" required /><br />
+
+      <button type="button" onclick="fetchteacherData()">Add Teacher</button>
+    </form>
+
+    <h2>Teacher Details</h2>
+    <table id="teacherTable">
+      <thead>
+        <tr>
+          <th>Teacher ID</th>
+          <th>Name</th>
+          <th>Subject</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      function fetchteacherData() {
+        const name = document.getElementById("name").value;
+        const subject = document.getElementById("subject").value; // Corrected variable name
+        const email = document.getElementById("email").value;
+
+        fetch(
+          "http://localhost/tasks/advanceApiSchool/teachers/create_teacher.php",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: name,
+              subject: subject,
+              email: email,
+            }),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data); // Log the data for debugging
+            if (data.teacherId) {
+              const tableBody = document.querySelector("#teacherTable tbody");
+              tableBody.innerHTML += `
+                        <tr>
+                          <td>${data.teacherId}</td>
+                          <td>${data.name}</td>
+                          <td>${data.subject}</td>
+                          <td>${data.email}</td>
+                        </tr>
+                    `;
+            } else {
+              alert("Failed to create teacher");
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>
