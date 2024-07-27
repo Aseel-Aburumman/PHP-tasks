@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create User</title>
+    <style>
+      table {
+        width: 50%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Tell me the data, I create the user, hehe :3</h2>
+    <form id="userForm">
+      <label for="name">Enter User Name:</label>
+      <input type="text" id="name" name="name" required /><br />
+      <label for="email">Enter User email:</label>
+      <input type="email" id="email" name="email" required /><br />
+      <label for="phone">Enter User phone:</label>
+      <input type="number" id="phone" name="phone" required /><br />
+      <label for="password">Enter User password:</label>
+      <input type="password" id="password" name="password" required /><br />
+      <button type="button" onclick="fetchUserData()">Add User</button>
+    </form>
+
+    <h2>User Details</h2>
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      function fetchUserData() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const password = document.getElementById("password").value;
+
+        fetch(
+          "http://localhost/tasks/simpleApiOrange/customers/create_user.php",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: name,
+              email: email,
+              phone: phone,
+              password: password,
+            }),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data); // Log the data for debugging
+            if (data.id) {
+              const tableBody = document.querySelector("#userTable tbody");
+              tableBody.innerHTML += `
+                        <tr>
+                            <td>${data.id}</td>
+                            <td>${data.name}</td>
+                            <td>${data.email}</td>
+                            <td>${data.phone}</td>
+                        </tr>
+                    `;
+            } else {
+              alert("Failed to create user");
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>

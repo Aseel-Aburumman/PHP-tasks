@@ -1,0 +1,41 @@
+PASSWORD: Aseel123$
+---------------------------------------------------------------------------------------------------
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone INT(20),
+    password VARCHAR(255) NOT NULL
+);
+
+
+INSERT INTO  customers( name, email, phone, password) VALUES
+('aseel aburumman', 'aseel@gmail.com', '0795456525', 'Aseel123$'),
+('ali aburumman', 'ali@gmail.com', '0795456525', 'Aseel123$'),
+('khalid ali', 'khalid@gmail.com', '0795456525', 'Aseel123$'),
+('omar abukhader', 'omar@gmail.com', '0795456525', 'Aseel123$'),
+('lana ahmad', 'lana@gmail.com', '0795456525', 'Aseel123$'),
+('amal abukhalil', 'amal@gmail.com', '0795456525', 'Aseel123$'),
+('dana abbadi', 'dana@gmail.com', '0795456525', 'Aseel123$');
+------------------------------------------------------------------
+CREATE TABLE phones (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  img_url VARCHAR(255) NOT NULL,
+  rate INT NOT NULL,
+  brand VARCHAR(50) NOT NULL,
+  price VARCHAR(50) NOT NULL,
+  oldprice VARCHAR(50) NOT NULL,
+  is_out_of_stock TINYINT DEFAULT 0
+);
+
+----------------------------------------------------------------
+INSERT INTO phones (name, img_url, rate, brand, price, oldprice, is_out_of_stock) VALUES
+('Samsung Galaxy Note 20 Ultra', 'https://image-us.samsung.com/us/smartphones/galaxy-s21/gallery-images-palette-exclusive/P3-Exclusive-Phantom-Brown/PDP-P3-Phantom-Brown-lockup-01-1600x1200.jpg?$product-details-jpg$', 5, 'Samsung', 'JOD 759.00', '770', 1),
+('INFINIX Zero 8', 'https://beon.store/images/detailed/44/Beon.ge_Itel_A48_L6006_Purple__1_.jpg', 0, 'Infinix', 'JOD 205.00', '220', 1),
+('Apple iPhone 12 Pro', 'https://i5.walmartimages.com/seo/Pre-Owned-Apple-iPhone-12-Pro-128GB-Silver-Fully-Unlocked-Excellent-Condition_844d1042-b2d1-48db-8b37-2c34f1d94f8d.2e25fcad07148d0a246746cbf1f0537b.jpeg', 0, 'Apple', 'JOD 973.00', '1000', 1),
+('ITEL A48', 'https://beon.store/images/detailed/44/Beon.ge_Itel_A48_L6006_Purple__1_.jpg', 0, 'iTel', 'JOD 66.00', '80', 0),
+('Samsung Galaxy S21 Ultra', 'https://image-us.samsung.com/us/smartphones/galaxy-s21/gallery-images-palette-exclusive/P3-Exclusive-Phantom-Brown/PDP-P3-Phantom-Brown-lockup-01-1600x1200.jpg?$product-details-jpg$', 0, 'Samsung', 'JOD 799.00', '850', 0),
+('Galaxy A52', 'https://hatif.net/wp-content/uploads/2021/05/Samsung-Galaxy-A52-5G-500x500.jpg', 0, 'Samsung', 'JOD 267.00', '280', 0);
+
+----------------------------------------------------------------------

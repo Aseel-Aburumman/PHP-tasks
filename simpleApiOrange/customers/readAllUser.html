@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display Customers</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Customers List</h2>
+    <table id="customersTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      // Fetch the data from read.php
+      fetch("http://localhost/tasks/simpleApiOrange/customers/read.php")
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === 200) {
+            const tableBody = document.querySelector("#customersTable tbody");
+            data.data.forEach((customer) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                            <td>${customer.id}</td>
+                            <td>${customer.name}</td>
+                            <td>${customer.email}</td>
+                            <td>${customer.phone}</td>
+                        `;
+              tableBody.appendChild(row);
+            });
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    </script>
+  </body>
+</html>
