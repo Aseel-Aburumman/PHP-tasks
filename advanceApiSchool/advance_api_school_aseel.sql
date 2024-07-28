@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2024 at 11:48 PM
+-- Generation Time: Jul 28, 2024 at 11:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,7 +58,8 @@ INSERT INTO `exams` (`exam_id`, `subject_id`, `date`, `max_score`) VALUES
 (17, 6, '2023-06-15', 30),
 (18, 6, '2023-07-17', 40),
 (19, 1, '2023-10-25', 100),
-(20, 2, '0000-00-00', 100);
+(20, 2, '0000-00-00', 100),
+(21, 9, '0000-00-00', 100);
 
 -- --------------------------------------------------------
 
@@ -90,7 +91,8 @@ INSERT INTO `students` (`id`, `name`, `date_of_birth`, `address`, `email`, `phon
 (5, 'lana ahmad', '2000-07-06', 'amman', 'lana@gmail.com', 795456525, 'Aseel123$', 6, 4, 1),
 (6, 'amal abukhalil', '1998-05-05', 'amman', 'amal@gmail.com', 795456525, 'Aseel123$', 2, 4, 5),
 (7, 'dana abbadi', '1999-01-29', 'amman', 'dana@gmail.com', 795456525, 'Aseel123$', 5, 4, 1),
-(8, 'postman first edit', '1999-06-05', 'zarqa', 'postmanFirst@example.com', 796615575, 'Aseel123$', 6, 3, 1);
+(8, 'postman first edit', '1999-06-05', 'zarqa', 'postmanFirsthaha@example.com', 796615575, 'Aseel123$', 6, 3, 1),
+(10, 'postman first add', '1999-06-05', 'zarqa', 'postman2nd@example.com', 796615575, 'Aseel123$', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -117,7 +119,33 @@ INSERT INTO `subjects` (`subject_id`, `name`, `description`, `teacherId`) VALUES
 (5, 'Arabic', 'Arabiv description', 5),
 (6, 'Art', 'Art description', 4),
 (7, 'Sport', 'lets move ', 7),
-(9, 'Philosophy', 'Philosophy', 8);
+(9, 'Philosophy', 'Philosophy', 8),
+(11, 'php', 'php', 9);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subject_student`
+--
+
+CREATE TABLE `subject_student` (
+  `id` int(11) NOT NULL,
+  `subject_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `subject_student`
+--
+
+INSERT INTO `subject_student` (`id`, `subject_id`, `student_id`) VALUES
+(19, 1, 1),
+(20, 2, 1),
+(21, 3, 2),
+(22, 4, 3),
+(23, 5, 3),
+(24, 6, 5),
+(28, 9, 8);
 
 -- --------------------------------------------------------
 
@@ -144,7 +172,8 @@ INSERT INTO `teachers` (`teacherId`, `name`, `subject`, `email`) VALUES
 (5, 'Mr. Ali', 'Arabic', 'mrAli@example.com'),
 (6, 'Mrs. Johnson', 'English', 'mrsjohnson@example.com'),
 (7, 'aseel aburumman', 'Sport', 'aseel@gmail.com'),
-(8, 'Mr. Omar', 'Philosophy', 'mromar@gmail.com');
+(8, 'Mr. Omar', 'Philosophy', 'mromar@gmail.com'),
+(9, 'Mr. test', 'php', 'mrtest@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -175,6 +204,14 @@ ALTER TABLE `subjects`
   ADD KEY `teacherId` (`teacherId`);
 
 --
+-- Indexes for table `subject_student`
+--
+ALTER TABLE `subject_student`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `subject_id` (`subject_id`),
+  ADD KEY `student_id` (`student_id`);
+
+--
 -- Indexes for table `teachers`
 --
 ALTER TABLE `teachers`
@@ -188,25 +225,31 @@ ALTER TABLE `teachers`
 -- AUTO_INCREMENT for table `exams`
 --
 ALTER TABLE `exams`
-  MODIFY `exam_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `exam_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `subject_student`
+--
+ALTER TABLE `subject_student`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `teacherId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `teacherId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
@@ -231,6 +274,13 @@ ALTER TABLE `students`
 --
 ALTER TABLE `subjects`
   ADD CONSTRAINT `subjects_ibfk_1` FOREIGN KEY (`teacherId`) REFERENCES `teachers` (`teacherId`);
+
+--
+-- Constraints for table `subject_student`
+--
+ALTER TABLE `subject_student`
+  ADD CONSTRAINT `subject_student_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`subject_id`),
+  ADD CONSTRAINT `subject_student_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

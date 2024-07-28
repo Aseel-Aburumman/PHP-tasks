@@ -19,7 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // the POST data is JSON, so it converts it to an array
     $data = json_decode(file_get_contents('php://input'), true);
 
-    if (isset($data['name']) && isset($data['date_of_birth']) && isset($data['address']) && isset($data['email']) && isset($data['phone']) && isset($data['password'])) {
+    if (
+        isset($data['name']) && isset($data['date_of_birth']) && isset($data['address']) && isset($data['email'])
+        && isset($data['phone']) && isset($data['password'])
+    ) {
         $name = $data['name'];
         $date_of_birth = $data['date_of_birth'];
         $address = $data['address'];
